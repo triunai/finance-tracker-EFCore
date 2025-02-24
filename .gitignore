@@ -4,7 +4,12 @@
 # Compiled binaries and intermediate files
 bin/
 obj/
-
+/**/.vs/*
+/**/bin/*
+/**/obj/*
+/**/*.user
+/*.nupkg
+/**/logs/*
 # NuGet packages folder
 packages/
 
