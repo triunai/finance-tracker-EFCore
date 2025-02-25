@@ -15,3 +15,4 @@ namespace FinanceTracker.Domain.Enums
         BankTransfer = 5,
         DuitNow = 6
     }
+}
