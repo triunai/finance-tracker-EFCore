@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinanceTracker.Infrastructure
 {
@@ -19,7 +20,7 @@ namespace FinanceTracker.Infrastructure
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
-                    sqlOptions => sqlOptions.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
+                    sqlOptions => sqlOptions.MigrationsAssembly("FinanceTracker.Infrastructure")));
 
             // Register repositories, AutoMapper, etc.
             // Example: services.AddScoped<IExpenseRepository, ExpenseRepository>();

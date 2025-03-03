@@ -1,5 +1,6 @@
 ﻿using FinanceTracker.Domain.Enums;
 using FinanceTracker.Infrastructure.DbContexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -9,11 +9,16 @@ namespace FinanceTracker.Infrastructure.DbContexts
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseItem> ExpenseItems { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Budget> Budgets { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging(); // Add this line
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -39,10 +44,36 @@ namespace FinanceTracker.Infrastructure.DbContexts
                 .HasForeignKey(c => c.ParentCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Budget>()
+               .HasOne(b => b.Category)
+               .WithMany()
+               .HasForeignKey(b => b.CategoryId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            // Seed sample budgets (without 'spent' - it's calculated)
+            modelBuilder.Entity<Budget>().HasData(
+                new Budget { Id = 1, CategoryId = 1, Amount = 1500, Period = Period.Monthly },
+                new Budget { Id = 2, CategoryId = 2, Amount = 500, Period = Period.Monthly }
+            );
+
             // Seed initial data
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Food", Description = "Groceries" },
                 new Category { Id = 2, Name = "Transport", Description = "Fuel" }
+            );
+
+            modelBuilder.Entity<ExpenseItem>().HasData(
+                new ExpenseItem
+                {
+                    Id = 1,
+                    ExpenseId = 1, // Explicitly link to Expense.Id=1
+                    CategoryId = 1,
+                    PaymentMethod = PaymentMethod.Cash,
+                    Description = "Vegetables",
+                    Price = 10.5m,
+                    Quantity = 2,
+                    CreatedAt = DateTime.UtcNow
+                }
             );
 
             modelBuilder.Entity<Expense>().HasData(
@@ -52,19 +83,6 @@ namespace FinanceTracker.Infrastructure.DbContexts
                     Date = DateTime.Today,
                     Notes = "Groceries",
                     CreatedAt = DateTime.UtcNow,
-                    ExpenseItems = new List<ExpenseItem>
-                    {
-                        new ExpenseItem
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            PaymentMethod = PaymentMethod.Cash,
-                            Description = "Vegetables",
-                            Price = 10.5m,
-                            Quantity = 2,
-                            CreatedAt = DateTime.UtcNow
-                        }
-                    }
                 }
             );
         }
