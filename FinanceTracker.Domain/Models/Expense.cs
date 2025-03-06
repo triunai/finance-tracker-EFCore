@@ -12,7 +12,7 @@ namespace FinanceTracker.Domain.Models
         public int Id { get; set; }
         public DateTime Date { get; set; }
         
-        //todo: ask gpt WTFFF
+        //todo: ask ai about notes isnt it stupid to add?
         public string Notes { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }

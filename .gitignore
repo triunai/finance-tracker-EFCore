@@ -1,98 +1,14 @@
-# ================================
-# Ignore build artifacts
-# ================================
-# Compiled binaries and intermediate files
-bin/
-obj/
-/**/.vs/*
-/**/bin/*
-/**/obj/*
-/**/*.user
-/*.nupkg
-/**/logs/*
-# NuGet packages folder
-packages/
-
-# Publish output
-*.nupkg
-*.nuspec
-*.snupkg
-
-# ================================
-# Ignore Visual Studio files
-# ================================
-# User-specific files
+# Visual Studio files
+.vs/
 *.user
 *.suo
-*.userprefs
 
-# IDE-specific files
-.vs/
-.vscode/
+# Build Folders
+bin/
+obj/
+
+# Rider or other IDE folders
 .idea/
 
-# ================================
-# Ignore .NET-specific files
-# ================================
-# Temporary files
-*.tmp
-*.log
-*.pid
-*.seed
-*.pid.lock
-
-# Generated files
-*.csproj.nuget.*
-*.csproj.user
-*.DotSettings.user
-
-# Debug and release folders
-Debug/
-Release/
-x64/
-x86/
-
-# ================================
-# Ignore runtime and environment files
-# ================================
-# Local environment settings
-appsettings.local.json
+# User secrets
 secrets.json
-.env
-*.env.*
-
-# Logs and diagnostics
-logs/
-*.log
-*.trace
-
-# ================================
-# Ignore operating system files
-# ================================
-# macOS
-.DS_Store
-
-# Windows
-Thumbs.db
-desktop.ini
-
-# Linux
-*~
-
-# ================================
-# Ignore test-related files
-# ================================
-# Test results
-TestResults/
-coverage/
-
-# ================================
-# Ignore global tools and caches
-# ================================
-# .NET CLI tools
-.dotnet/
-tools/
-
-# NuGet cache
-nuget.config
-nuget.exe
