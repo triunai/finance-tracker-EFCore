@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Supabase;
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
+using static Supabase.Postgrest.Constants;
 
 namespace FinanceTracker.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class PaymentMethodsController : ControllerBase
     {
@@ -43,20 +44,48 @@ namespace FinanceTracker.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var response = await _supabaseClient.From<PaymentMethod>()
-                                                .Filter("id", Supabase.Postgrest.Constants.Operator.Equals, id)
-                                                .Single();
+            var response = await _supabaseClient
+                .From<PaymentMethod>()
+                .Filter("id", Operator.Equals, id)
+                .Single();
+
             if (response == null)
                 return NotFound();
 
-            return Ok(response);
+            // Map to DTO
+            var dto = new PaymentMethodDto
+            {
+                Id = response.Id,
+                MethodName = response.MethodName,
+                CreatedBy = response.CreatedBy,
+                CreatedAt = response.CreatedAt,
+                UpdatedBy = response.UpdatedBy,
+                UpdatedAt = response.UpdatedAt,
+                IsDeleted = response.IsDeleted
+            };
+
+            return Ok(dto); // Return DTO instead of raw model
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] PaymentMethod method)
         {
             var response = await _supabaseClient.From<PaymentMethod>().Insert(method);
-            return CreatedAtAction(nameof(GetAll), new { id = response.Models.First().Id }, response.Models.First());
+            var createdMethod = response.Models.First();
+
+            // Map to DTO
+            var dto = new PaymentMethodDto
+            {
+                Id = createdMethod.Id,
+                MethodName = createdMethod.MethodName,
+                CreatedBy = createdMethod.CreatedBy,
+                CreatedAt = createdMethod.CreatedAt,
+                UpdatedBy = createdMethod.UpdatedBy,
+                UpdatedAt = createdMethod.UpdatedAt,
+                IsDeleted = createdMethod.IsDeleted
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
         }
 
         [HttpPut("{id}")]
@@ -64,7 +93,21 @@ namespace FinanceTracker.Controllers
         {
             method.Id = id;
             var response = await _supabaseClient.From<PaymentMethod>().Update(method);
-            return Ok(response.Models.First());
+            var updatedMethod = response.Models.First();
+
+            // Map to DTO
+            var dto = new PaymentMethodDto
+            {
+                Id = updatedMethod.Id,
+                MethodName = updatedMethod.MethodName,
+                CreatedBy = updatedMethod.CreatedBy,
+                CreatedAt = updatedMethod.CreatedAt,
+                UpdatedBy = updatedMethod.UpdatedBy,
+                UpdatedAt = updatedMethod.UpdatedAt,
+                IsDeleted = updatedMethod.IsDeleted
+            };
+
+            return Ok(dto);
         }
 
         [HttpDelete("{id}")]
@@ -83,7 +126,7 @@ namespace FinanceTracker.Controllers
     }
 
     [Table("payment_methods")]
-    public class PaymentMethod : BaseModel
+    public class PaymentMethod 
     {
         [PrimaryKey("id", false)]
         public int Id { get; set; }
