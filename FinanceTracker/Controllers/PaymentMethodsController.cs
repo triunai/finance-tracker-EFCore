@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,13 @@ namespace FinanceTracker.Controllers
     public class PaymentMethodsController : ControllerBase
     {
         private readonly Client _supabaseClient;
+        private readonly IMapper _mapper;
 
-        public PaymentMethodsController(Client supabaseClient)
+
+        public PaymentMethodsController(Client supabaseClient, IMapper mapper)
         {
             _supabaseClient = supabaseClient;
+            _mapper = mapper;
         }
 
 
@@ -68,24 +72,20 @@ namespace FinanceTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] PaymentMethod method)
+        public async Task<IActionResult> Create([FromBody] PaymentMethodCreateDto dto)
         {
-            var response = await _supabaseClient.From<PaymentMethod>().Insert(method);
+            // Map to model (CreatedAt is ignored)
+            var paymentMethod = _mapper.Map<PaymentMethod>(dto);
+
+            // Insert into Supabase (database sets CreatedAt)
+            var response = await _supabaseClient.From<PaymentMethod>().Insert(paymentMethod);
             var createdMethod = response.Models.First();
 
-            // Map to DTO
-            var dto = new PaymentMethodDto
-            {
-                Id = createdMethod.Id,
-                MethodName = createdMethod.MethodName,
-                CreatedBy = createdMethod.CreatedBy,
-                CreatedAt = createdMethod.CreatedAt,
-                UpdatedBy = createdMethod.UpdatedBy,
-                UpdatedAt = createdMethod.UpdatedAt,
-                IsDeleted = createdMethod.IsDeleted
-            };
-
-            return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = createdMethod.Id },
+                _mapper.Map<PaymentMethodDto>(createdMethod)
+            );
         }
 
         [HttpPut("{id}")]
@@ -126,7 +126,7 @@ namespace FinanceTracker.Controllers
     }
 
     [Table("payment_methods")]
-    public class PaymentMethod 
+    public class PaymentMethod : BaseModel
     {
         [PrimaryKey("id", false)]
         public int Id { get; set; }
@@ -158,6 +158,21 @@ namespace FinanceTracker.Controllers
         public DateTime CreatedAt { get; set; }
         public Guid? UpdatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public bool IsDeleted { get; set; }
+    }
+
+    public class PaymentMethodCreateDto
+    {
+        public string MethodName { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+    }
+
+    public class PaymentMethodUpdateDto
+    {
+        public int Id { get; set; }
+        public string MethodName { get; set; }
+        public Guid? UpdatedBy { get; set; }
         public bool IsDeleted { get; set; }
     }
 }
