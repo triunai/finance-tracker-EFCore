@@ -34,7 +34,10 @@ namespace FinanceTracker.Infrastructure.Mappers
                 .ForMember(dest => dest.Id, opt => opt.Ignore()) // ID comes from route
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore()) // Never updated
                 .ForMember(dest => dest.CreatedBy, opt => opt.Ignore()) // Never updated
-                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+                .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore()) // Explicitly set in controller
+                .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => src.IsDeleted))
+                .ForMember(dest => dest.MethodName, opt => opt.MapFrom(src => src.MethodName))
+                .ForMember(dest => dest.UpdatedBy, opt => opt.MapFrom(src => src.UpdatedBy));
         }
 
 

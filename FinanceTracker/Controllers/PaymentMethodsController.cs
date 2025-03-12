@@ -89,27 +89,30 @@ namespace FinanceTracker.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] PaymentMethod method)
+        public async Task<IActionResult> Update(int id, [FromBody] PaymentMethodUpdateDto dto)
         {
-            method.Id = id;
-            var response = await _supabaseClient.From<PaymentMethod>().Update(method);
-            var updatedMethod = response.Models.First();
+            // Fetch existing entity
+            var existingMethod = await _supabaseClient
+                .From<PaymentMethod>()
+                .Filter("id", Operator.Equals, id)
+                .Single();
 
-            // Map to DTO
-            var dto = new PaymentMethodDto
-            {
-                Id = updatedMethod.Id,
-                MethodName = updatedMethod.MethodName,
-                CreatedBy = updatedMethod.CreatedBy,
-                CreatedAt = updatedMethod.CreatedAt,
-                UpdatedBy = updatedMethod.UpdatedBy,
-                UpdatedAt = updatedMethod.UpdatedAt,
-                IsDeleted = updatedMethod.IsDeleted
-            };
+            if (existingMethod == null)
+                return NotFound();
 
-            return Ok(dto);
+            // Map DTO properties to the existing model
+            _mapper.Map(dto, existingMethod); // Automatically updates only allowed fields
+
+            // Explicitly set UpdatedAt timestamp
+            existingMethod.UpdatedAt = DateTime.UtcNow;
+
+            // Save changes in Supabase
+            var updateResponse = await _supabaseClient.From<PaymentMethod>().Update(existingMethod);
+            var updatedMethod = updateResponse.Models.First();
+
+            // Return updated DTO
+            return Ok(_mapper.Map<PaymentMethodDto>(updatedMethod));
         }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
