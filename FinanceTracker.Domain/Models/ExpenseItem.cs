@@ -13,7 +13,7 @@ namespace FinanceTracker.Domain.Models
         public int Id { get; set; }
         public int ExpenseId { get; set; }
         public int CategoryId { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public PNum PaymentMethod { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; } = 1;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FinanceTracker.Domain.Enums
 {
-    public enum PaymentMethod
+    public enum PNum
     {
         [Display(Name = "Cash")]
         Cash = 1,
