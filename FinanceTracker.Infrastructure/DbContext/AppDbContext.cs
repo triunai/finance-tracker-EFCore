@@ -68,7 +68,7 @@ namespace FinanceTracker.Infrastructure.DbContexts
                     Id = 1,
                     ExpenseId = 1, // Explicitly link to Expense.Id=1
                     CategoryId = 1,
-                    PaymentMethod = PaymentMethod.Cash,
+                    PaymentMethod = PNum.Cash,
                     Description = "Vegetables",
                     Price = 10.5m,
                     Quantity = 2,
