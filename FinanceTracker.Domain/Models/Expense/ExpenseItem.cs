@@ -8,23 +8,25 @@ using System.Threading.Tasks;
 
 namespace FinanceTracker.Domain.Models
 {
+    [Table("expense_item")]
     public class ExpenseItem
     {
-        public int Id { get; set; }
-        public int ExpenseId { get; set; }
-        public int CategoryId { get; set; }
-        public PNum PaymentMethod { get; set; }
+        public long Id { get; set; }
+        public long ExpenseId { get; set; }
+        public long CategoryId { get; set; }
+        public decimal Amount { get; set; }
         public string Description { get; set; }
-        public decimal Price { get; set; }
-        public int Quantity { get; set; } = 1;
+        public Guid? CreatedBy { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public Guid? UpdatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public bool IsDeleted { get; set; }
 
-        // Computed property for individual item total
-        [NotMapped] // Exclude from database
-        public decimal Total => Price * Quantity;
+        [NotMapped]
+        public decimal Total => Amount;
 
         public virtual Expense Expense { get; set; }
-        public virtual Category Category { get; set; }
+        public virtual ExpenseCategory Category { get; set; }
     }
+
 }
