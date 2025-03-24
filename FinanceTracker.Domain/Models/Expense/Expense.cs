@@ -12,7 +12,10 @@ namespace FinanceTracker.Domain.Models
     public class Expense
     {
         public long Id { get; set; }
+
+        [Column("user_id")]
         public Guid UserId { get; set; }
+        [Column("date")]
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public string Description { get; set; }
         public int? PaymentMethodId { get; set; }
