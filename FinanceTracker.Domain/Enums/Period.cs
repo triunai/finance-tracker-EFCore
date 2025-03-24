@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace FinanceTracker.Domain.Enums
 {
+
+    // this is in caps, in ur db its daily,weekly,monthly
     public enum Period
     {
         Daily,

@@ -50,17 +50,8 @@ namespace FinanceTracker.Infrastructure.DbContexts
                .HasForeignKey(b => b.CategoryId)
                .OnDelete(DeleteBehavior.Restrict);
 
-            // Seed sample budgets (without 'spent' - it's calculated)
-            modelBuilder.Entity<Budget>().HasData(
-                new Budget { Id = 1, CategoryId = 1, Amount = 1500, Period = Period.Monthly },
-                new Budget { Id = 2, CategoryId = 2, Amount = 500, Period = Period.Monthly }
-            );
 
-            // Seed initial data
-            modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Food", Description = "Groceries" },
-                new Category { Id = 2, Name = "Transport", Description = "Fuel" }
-            );
+
 
             modelBuilder.Entity<ExpenseItem>().HasData(
                 new ExpenseItem
