@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace FinanceTracker.Infrastructure.Mappers
 {
-    public class MappingProfile : Profile
+    public class MappingProfilePaymentMethod : Profile
     {
-        public MappingProfile()
+        public MappingProfilePaymentMethod()
         {
             // Map BaseModel-derived classes to DTOs
             CreateMap<PaymentMethod, PaymentMethodDto>()
@@ -39,7 +39,5 @@ namespace FinanceTracker.Infrastructure.Mappers
                 .ForMember(dest => dest.MethodName, opt => opt.MapFrom(src => src.MethodName))
                 .ForMember(dest => dest.UpdatedBy, opt => opt.MapFrom(src => src.UpdatedBy));
         }
-
-
     }
 }

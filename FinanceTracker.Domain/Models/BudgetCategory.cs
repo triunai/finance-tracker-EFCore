@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace FinanceTracker.Domain.Models
 {
     [Table("budget_category")]
-    public class Category
+    public class BudgetCategory
     {
         [Key, Column(Order = 0)]
         public long BudgetId { get; set; }

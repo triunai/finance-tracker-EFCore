@@ -15,7 +15,7 @@ namespace FinanceTracker.Domain.Models
         public Guid UserId { get; set; }
         public string Name { get; set; }
         public decimal Amount { get; set; }
-        public PeriodEnum Period { get; set; }
+        public Period Period { get; set; }
         public DateTime StartDate { get; set; } = DateTime.UtcNow;
         public DateTime? EndDate { get; set; }
         public Guid? CreatedBy { get; set; }

@@ -34,7 +34,6 @@ namespace FinanceTracker.Infrastructure
 
                 return supabaseClient;
             });
-
             // Register repositories, AutoMapper, etc.
             // Example: services.AddScoped<IExpenseRepository, ExpenseRepository>();
 

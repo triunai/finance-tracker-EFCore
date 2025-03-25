@@ -1,4 +1,5 @@
-using FinanceTracker.Infrastructure; // Add this
+using FinanceTracker.Infrastructure;
+using FinanceTracker.Infrastructure.Mappers; // Add this
 
 namespace FinanceTracker
 {
@@ -16,7 +17,12 @@ namespace FinanceTracker
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddInfrastructure(builder.Configuration); var app = builder.Build();
-
+            
+            builder.Services.AddAutoMapper(cfg => { /* optional config */ },
+                typeof(MappingProfileExpenses).Assembly,
+                typeof(MappingProfilePaymentMethod).Assembly
+                /* etc. */
+            );
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
