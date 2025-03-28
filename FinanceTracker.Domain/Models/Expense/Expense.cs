@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Supabase.Postgrest.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace FinanceTracker.Domain.Models
 {
     [Table("expense")]
-    public class Expense 
+    public class Expense  : BaseModel
     {
         public long Id { get; set; }
 
@@ -51,6 +52,8 @@ namespace FinanceTracker.Domain.Models
         public Guid? UpdatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
+
+        [NotMapped]
         public List<ExpenseItemDto> ExpenseItems { get; set; }
     = new List<ExpenseItemDto>();
     }
