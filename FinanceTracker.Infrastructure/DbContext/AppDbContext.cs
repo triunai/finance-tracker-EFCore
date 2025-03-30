@@ -6,7 +6,7 @@ namespace FinanceTracker.Infrastructure.DbContexts
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<expense> Expenses { get; set; }
         public DbSet<ExpenseItem> ExpenseItems { get; set; }
         public DbSet<BudgetCategory> Categories { get; set; }
         public DbSet<Budget> Budgets { get; set; }

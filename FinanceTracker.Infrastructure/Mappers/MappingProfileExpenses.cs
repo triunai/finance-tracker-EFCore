@@ -15,7 +15,7 @@ namespace FinanceTracker.Infrastructure.Mappers
             //---------------------------
             // 1) Model → DTO (READ)
             //---------------------------
-            CreateMap<Expense, ExpenseDto>()
+            CreateMap<expense, ExpenseDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
@@ -47,7 +47,7 @@ namespace FinanceTracker.Infrastructure.Mappers
             // 2) Create DTO → Model
             //---------------------------
             // For when a new Expense is created
-            CreateMap<CreateExpenseDto, Expense>()
+            CreateMap<CreateExpenseDto, expense>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore()) // PK auto-generated
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date ?? DateTime.UtcNow))
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
@@ -63,7 +63,7 @@ namespace FinanceTracker.Infrastructure.Mappers
             // 3) Update DTO → Model
             //---------------------------
             // For partial updates to an existing Expense
-            CreateMap<UpdateExpenseDto, Expense>()
+            CreateMap<UpdateExpenseDto, expense>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())       // PK from DB
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())// Don’t overwrite creation time
                 .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
