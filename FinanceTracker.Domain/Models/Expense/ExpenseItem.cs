@@ -25,7 +25,7 @@ namespace FinanceTracker.Domain.Models
         [NotMapped]
         public decimal Total => Amount;
 
-        public virtual Expense Expense { get; set; }
+        public virtual expense Expense { get; set; }
         public virtual ExpenseCategory Category { get; set; }
     }
     /// <summary>
